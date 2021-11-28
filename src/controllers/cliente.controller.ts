@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -17,13 +18,23 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import {Llaves} from '../config/llaves';
 import {Cliente} from '../models';
 import {ClienteRepository} from '../repositories';
+import {AutenticacionService, NotificacionService} from '../services';
 
 export class ClienteController {
   constructor(
+     /* Código agregado */
     @repository(ClienteRepository)
     public clienteRepository : ClienteRepository,
+
+    @service(AutenticacionService)
+    public autenticacionService: AutenticacionService,
+
+    @service(NotificacionService)
+    public notificacionService: NotificacionService
+    /* ----- */
   ) {}
 
   @post('/clientes')
@@ -44,7 +55,39 @@ export class ClienteController {
     })
     cliente: Omit<Cliente, 'id'>,
   ): Promise<Cliente> {
-    return this.clienteRepository.create(cliente);
+    /* Código agregado*/
+
+    // Generación de clave aleatoria y cifrado
+    let clave = this.autenticacionService.GenerarClave();
+    let claveCifrada = this.autenticacionService.CifrarClave(clave);
+    cliente.clave = claveCifrada;
+    let p = await this.clienteRepository.create(cliente);
+
+    // Obtención de datos del usuario para el envío de notificaciones de registro
+    let telefono = cliente.telefono;
+    let destino = cliente.correo;
+    let asunto = 'Registro en la plataforma';
+    let contenido = `Hola ${cliente.nombres}, su nombre de usuario es: ${cliente.correo}
+    y su contraseña es: ${clave}`
+
+    // Notificar al usuario por Email
+    fetch(
+      `${Llaves.urlServicioNotificaciones}/sendEmail?correoDestino=${destino}&asunto=${asunto}&contenido=${contenido}`,
+    ).then((data: any) => {
+      console.log(data);
+    });
+
+    // Notificar al usuario por SMS
+    fetch(
+      `${Llaves.urlServicioNotificaciones}/sms?telefono=${telefono}&mensaje=${contenido}`,
+    ).then((data: any) => {
+      console.log(data);
+    });
+
+    return p;
+    //return this.empleadoRepository.create(empleado);
+
+    /* ---- */
   }
 
   @get('/clientes/count')

@@ -19,6 +19,11 @@ import {
 } from '@loopback/rest';
 import {Producto} from '../models';
 import {ProductoRepository} from '../repositories';
+/* Código agregado*/
+import {authenticate} from '@loopback/authentication';
+
+@authenticate("admin")
+/* ---- */
 
 export class ProductoController {
   constructor(
@@ -47,6 +52,10 @@ export class ProductoController {
     return this.productoRepository.create(producto);
   }
 
+  /* Código agregado*/
+  @authenticate.skip()
+  /* ---- */
+  
   @get('/productos/count')
   @response(200, {
     description: 'Producto model count',

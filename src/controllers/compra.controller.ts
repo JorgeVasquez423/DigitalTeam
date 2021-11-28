@@ -19,7 +19,11 @@ import {
 } from '@loopback/rest';
 import {Compra} from '../models';
 import {CompraRepository} from '../repositories';
+/* Código agregado*/
+import {authenticate} from '@loopback/authentication';
 
+@authenticate("admin")
+/* ---- */
 export class CompraController {
   constructor(
     @repository(CompraRepository)
@@ -46,6 +50,10 @@ export class CompraController {
   ): Promise<Compra> {
     return this.compraRepository.create(compra);
   }
+
+  /* Código agregado*/
+  @authenticate.skip()
+  /* ---- */
 
   @get('/compras/count')
   @response(200, {
