@@ -34,6 +34,12 @@ export class Empleado extends Entity {
   })
   correo: string;
 
+  @property({
+    type: 'string',
+    required: false,
+  })
+  clave: string;
+
   @hasMany(() => Compra)
   compras: Compra[];
 

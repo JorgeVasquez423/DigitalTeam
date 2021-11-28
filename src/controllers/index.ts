@@ -5,3 +5,7 @@ export * from './compra-empleado.controller';
 export * from './empleado-compra.controller';
 export * from './compra-producto.controller';
 export * from './producto-compra.controller';
+export * from './empleado.controller';
+export * from './cliente.controller';
+export * from './producto.controller';
+export * from './compra.controller';
