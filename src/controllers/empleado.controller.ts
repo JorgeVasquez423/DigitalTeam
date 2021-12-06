@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {service} from '@loopback/core';
 import {
   Count,
@@ -78,7 +80,7 @@ export class EmpleadoController {
 
     // Notificar al usuario por Email
     fetch(
-      `${Llaves.urlServicioNotificaciones}/sendEmail?correoDestino=${destino}&asunto=${asunto}&contenido=${contenido}`,
+      `${Llaves.urlServicioNotificaciones}/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`,
     ).then((data: any) => {
       console.log(data);
     });

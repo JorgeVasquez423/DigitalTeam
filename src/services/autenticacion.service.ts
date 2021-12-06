@@ -1,9 +1,12 @@
-import {injectable, /* inject, */ BindingScope} from '@loopback/core';
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/naming-convention */
+import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 /* Código agregado*/
 import {repository} from '@loopback/repository';
 import {Llaves} from '../config/llaves';
 import {Cliente, Empleado} from '../models';
-import {EmpleadoRepository, ClienteRepository} from '../repositories';
+import {ClienteRepository, EmpleadoRepository} from '../repositories';
 
 const generador = require('password-generator');
 const cryptoJS = require('crypto-js');
