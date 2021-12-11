@@ -17,9 +17,11 @@ import {
   del,
   requestBody,
   response,
+  HttpErrors,
 } from '@loopback/rest';
 import {Llaves} from '../config/llaves';
 import {Cliente} from '../models';
+import {Credenciales} from '../models/credenciales.model';
 import {ClienteRepository} from '../repositories';
 import {AutenticacionService, NotificacionService} from '../services';
 
@@ -36,6 +38,34 @@ export class ClienteController {
     public notificacionService: NotificacionService
     /* ----- */
   ) {}
+
+  @post("/identificarCliente", {
+    responses: {
+      '200': {
+        description: "Identificación de clientes"
+      }
+    }
+  })
+  async identificarCliente(
+    @requestBody() credenciales: Credenciales
+  ) {
+
+    let c = await this.autenticacionService.IdentificarCliente(credenciales.usuario, credenciales.clave)
+    if (c) {
+      let token = this.autenticacionService.GenerarTokenJWTECliente(c);
+      return {
+        datos: {
+          nombre: c.nombres,
+          correo: c.correo,
+          id: c.id
+        },
+        tk: token
+      }
+    } else {
+      throw new HttpErrors[401]("Datos inválidos")
+    }
+
+  }
 
   @post('/clientes')
   @response(200, {
