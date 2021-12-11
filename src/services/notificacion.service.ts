@@ -1,3 +1,5 @@
+/* eslint-disable no-empty */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 import {Twilio} from "twilio";
 

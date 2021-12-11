@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import {AuthenticationStrategy} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {HttpErrors, Request} from '@loopback/rest';
