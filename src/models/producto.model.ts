@@ -23,16 +23,16 @@ export class Producto extends Entity {
   nombre: string;
 
   @property({
-    type: 'string',
-    required: true,
-  })
-  descripcion: string;
-
-  @property({
     type: 'number',
     required: true,
   })
   precio: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  imagen: string;
 
   @hasMany(() => Compra)
   compras: Compra[];

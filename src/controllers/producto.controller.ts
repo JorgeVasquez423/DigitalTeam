@@ -28,8 +28,8 @@ import {authenticate} from '@loopback/authentication';
 export class ProductoController {
   constructor(
     @repository(ProductoRepository)
-    public productoRepository : ProductoRepository,
-  ) {}
+    public productoRepository: ProductoRepository,
+  ) { }
 
   @post('/productos')
   @response(200, {
@@ -55,7 +55,7 @@ export class ProductoController {
   /* Código agregado*/
   @authenticate.skip()
   /* ---- */
-  
+
   @get('/productos/count')
   @response(200, {
     description: 'Producto model count',
@@ -66,6 +66,8 @@ export class ProductoController {
   ): Promise<Count> {
     return this.productoRepository.count(where);
   }
+
+  @authenticate.skip()
 
   @get('/productos')
   @response(200, {
@@ -104,6 +106,9 @@ export class ProductoController {
     return this.productoRepository.updateAll(producto, where);
   }
 
+  /* Código agregado*/
+  @authenticate.skip()
+  /* ---- */
   @get('/productos/{id}')
   @response(200, {
     description: 'Producto model instance',
