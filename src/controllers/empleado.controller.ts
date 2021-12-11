@@ -17,11 +17,13 @@ import {
   del,
   requestBody,
   response,
+  HttpErrors,
 } from '@loopback/rest';
  /* Código agregado */
 import {Llaves} from '../config/llaves';
 //import {Credenciales} from '../models/credenciales.model';
 import {Empleado} from '../models';
+import {Credenciales} from '../models/credenciales.model';
 import {EmpleadoRepository} from '../repositories';
 import {AutenticacionService, NotificacionService} from '../services';
 
@@ -41,6 +43,34 @@ export class EmpleadoController {
     public notificacionService: NotificacionService
     /* ----- */
   ) {}
+
+  @post("/identificarEmpleado", {
+    responses: {
+      '200': {
+        description: "Identificación de empleados"
+      }
+    }
+  })
+  async identificarEmpleado(
+    @requestBody() credenciales: Credenciales
+  ) {
+
+    let e = await this.autenticacionService.IdentificarEmpleado(credenciales.usuario, credenciales.clave)
+    if (e) {
+      let token = this.autenticacionService.GenerarTokenJWTEmpleado(e);
+      return {
+        datos: {
+          nombre: e.nombres,
+          correo: e.correo,
+          id: e.id
+        },
+        tk: token
+      }
+    } else {
+      throw new HttpErrors[401]("Datos inválidos")
+    }
+
+  }
 
   @post('/empleados')
   @response(200, {

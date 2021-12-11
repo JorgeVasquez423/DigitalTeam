@@ -40,11 +40,11 @@ export class AutenticacionService {
 
   IdentificarEmpleado(usuario: string, clave: string) {
     try {
-      let p = this.empleadoRepository.findOne({
+      let e = this.empleadoRepository.findOne({
         where: {correo: usuario, clave: clave},
       });
-      if (p) {
-        return p;
+      if (e) {
+        return e;
       }
       return false;
     } catch {
@@ -54,11 +54,11 @@ export class AutenticacionService {
 
   IdentificarCliente(usuario: string, clave: string) {
     try {
-      let p = this.empleadoRepository.findOne({
+      let c = this.clienteRepository.findOne({
         where: {correo: usuario, clave: clave},
       });
-      if (p) {
-        return p;
+      if (c) {
+        return c;
       }
       return false;
     } catch {
