@@ -15,7 +15,7 @@ export class Cliente extends Entity {
     required: true,
   })
   identificacion: string;
-
+  
   @property({
     type: 'string',
     required: true,
